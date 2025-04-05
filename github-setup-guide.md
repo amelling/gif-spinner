@@ -1,5 +1,8 @@
 # GitHub Setup Guide
 
+## Important Note
+The included GitHub Actions workflow (`.github/workflows/deploy.yml`) will only work properly AFTER you've created your GitHub repository and pushed your code to it. The error you're seeing is expected if you try to test the deployment before setting up GitHub.
+
 Follow these steps to push your project to GitHub and deploy it using GitHub Pages:
 
 ## 1. Initialize a Git Repository

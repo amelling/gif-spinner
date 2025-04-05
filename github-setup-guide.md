@@ -34,12 +34,10 @@ git commit -m "Initial commit - GIF Spinner Generator"
 After creating the repository, GitHub will show instructions. Use the commands for "push an existing repository from the command line":
 
 ```bash
-git remote add origin https://github.com/your-username/gif-spinner.git
+git remote add origin https://github.com/amelling/gif-spinner.git
 git branch -M main
 git push -u origin main
 ```
-
-Replace `your-username` with your actual GitHub username.
 
 ## 5. Set Up GitHub Pages
 
@@ -54,7 +52,7 @@ Replace `your-username` with your actual GitHub username.
 After the workflow runs successfully, your website will be available at:
 
 ```
-https://your-username.github.io/gif-spinner/
+https://amelling.github.io/gif-spinner/
 ```
 
 ## 7. Add Sample GIFs

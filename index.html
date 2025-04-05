@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIF Spinner Generator</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/gifuct-js@1.0.0/dist/gifuct-js.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.126.0/build/three.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>GIF Spinner Generator</h1>
+        <p>Convert animated GIFs into fidget spinner designs</p>
+    </header>
+
+    <main>
+        <section id="gif-selection" class="section-container">
+            <h2>Step 1: Select or Upload a GIF</h2>
+            
+            <div class="selection-container">
+                <div class="upload-container">
+                    <label for="gif-upload" class="upload-label">Upload your own GIF</label>
+                    <input type="file" id="gif-upload" accept=".gif" class="upload-input">
+                </div>
+                
+                <div class="samples-container">
+                    <h3>Or choose from samples:</h3>
+                    <div id="sample-gifs" class="sample-grid">
+                        <!-- Sample GIFs will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div id="gif-preview-container" class="preview-container hidden">
+                <h3>Selected GIF:</h3>
+                <div class="preview-wrapper">
+                    <img id="gif-preview" alt="Selected GIF preview">
+                </div>
+                <div class="gif-info">
+                    <p id="gif-dimensions">Dimensions: -</p>
+                    <p id="gif-frames">Frames: -</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="conversion-options" class="section-container hidden">
+            <h2>Step 2: Configure Conversion Options</h2>
+            
+            <div class="options-container">
+                <div class="option-group">
+                    <h3>Conversion Method</h3>
+                    <label>
+                        <input type="radio" name="conversion-method" value="simple" checked>
+                        Simple (Faster, pixel art style)
+                    </label>
+                    <label>
+                        <input type="radio" name="conversion-method" value="advanced">
+                        Advanced (Better quality, slower)
+                    </label>
+                </div>
+                
+                <div class="option-group">
+                    <h3>Frame Processing</h3>
+                    <label>
+                        <span>Threshold:</span>
+                        <input type="range" id="threshold" min="0" max="255" value="128">
+                        <span id="threshold-value">128</span>
+                    </label>
+                    <label>
+                        <span>Detail Level:</span>
+                        <input type="range" id="detail-level" min="1" max="10" value="5">
+                        <span id="detail-level-value">5</span>
+                    </label>
+                </div>
+                
+                <div class="option-group advanced-options hidden">
+                    <h3>Advanced Options</h3>
+                    <label>
+                        <span>Corner Smoothing:</span>
+                        <input type="range" id="corner-smoothing" min="0" max="10" value="2">
+                        <span id="corner-smoothing-value">2</span>
+                    </label>
+                    <label>
+                        <span>Path Optimization:</span>
+                        <input type="range" id="path-optimization" min="0" max="10" value="5">
+                        <span id="path-optimization-value">5</span>
+                    </label>
+                </div>
+                
+                <button id="process-frames-btn" class="btn primary-btn">Process Frames</button>
+            </div>
+        </section>
+
+        <section id="spinner-design" class="section-container hidden">
+            <h2>Step 3: Design Your Spinner</h2>
+            
+            <div class="design-container">
+                <div class="design-options">
+                    <div class="option-group">
+                        <h3>Spinner Size</h3>
+                        <label>
+                            <span>Diameter (mm):</span>
+                            <input type="number" id="spinner-diameter" min="50" max="200" value="100">
+                        </label>
+                    </div>
+                    
+                    <div class="option-group">
+                        <h3>Frame Layout</h3>
+                        <label>
+                            <span>Number of Frames:</span>
+                            <input type="number" id="frame-count" min="3" max="16" value="8">
+                        </label>
+                        <label>
+                            <span>Frame Spacing:</span>
+                            <input type="range" id="frame-spacing" min="0" max="20" value="5">
+                            <span id="frame-spacing-value">5</span>
+                        </label>
+                    </div>
+                    
+                    <div class="option-group">
+                        <h3>Bearing</h3>
+                        <label>
+                            <span>Bearing Diameter (mm):</span>
+                            <input type="number" id="bearing-diameter" min="10" max="30" value="22">
+                        </label>
+                        <label>
+                            <span>Bearing Type:</span>
+                            <select id="bearing-type">
+                                <option value="standard">Standard (608)</option>
+                                <option value="printable">Print-in-place</option>
+                            </select>
+                        </label>
+                    </div>
+                    
+                    <div class="option-group">
+                        <h3>Outline</h3>
+                        <label>
+                            <span>Thickness:</span>
+                            <input type="range" id="outline-thickness" min="1" max="10" value="3">
+                            <span id="outline-thickness-value">3</span>
+                        </label>
+                        <label>
+                            <span>Style:</span>
+                            <select id="outline-style">
+                                <option value="simple">Simple</option>
+                                <option value="rounded">Rounded</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="preview-area">
+                    <div id="spinner-preview-container">
+                        <!-- SVG preview will be rendered here -->
+                    </div>
+                </div>
+            </div>
+            
+            <button id="generate-spinner-btn" class="btn primary-btn">Generate Spinner</button>
+        </section>
+
+        <section id="output-options" class="section-container hidden">
+            <h2>Step 4: Export Your Spinner</h2>
+            
+            <div class="export-container">
+                <div class="format-selection">
+                    <h3>Select Format</h3>
+                    <div class="format-options">
+                        <label>
+                            <input type="checkbox" id="export-svg" checked>
+                            SVG (Vector)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="export-png">
+                            PNG (Image)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="export-stl">
+                            STL (3D Model)
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="stl-options hidden">
+                    <h3>3D Model Options</h3>
+                    <label>
+                        <span>Thickness (mm):</span>
+                        <input type="number" id="model-thickness" min="1" max="10" value="3">
+                    </label>
+                </div>
+                
+                <div class="export-preview">
+                    <h3>Preview</h3>
+                    <div id="export-preview-container">
+                        <!-- Export preview will be shown here -->
+                    </div>
+                </div>
+                
+                <button id="export-btn" class="btn primary-btn">Export Files</button>
+            </div>
+        </section>
+
+        <div id="processing-overlay" class="hidden">
+            <div class="processing-modal">
+                <h3>Processing...</h3>
+                <div class="progress-container">
+                    <div id="progress-bar" class="progress-bar"></div>
+                </div>
+                <p id="processing-status">Initializing...</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 GIF Spinner Generator | <a href="https://github.com/yourusername/gif-spinner" target="_blank">GitHub</a></p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/gifProcessor.js"></script>
+    <script src="js/svgConverter.js"></script>
+    <script src="js/spinnerGenerator.js"></script>
+    <script src="js/exporters.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

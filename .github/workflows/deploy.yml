@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
@@ -11,6 +11,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      # Add a debug step to list files
+      - name: Debug - List files
+        run: ls -la
+      
+      # Add another debug step to show the GitHub Pages URL
+      - name: Debug - Show GitHub Pages URL
+        run: |
+          echo "GitHub Pages URL: https://amelling.github.io/gif-spinner/"
+          echo "Repository: ${{ github.repository }}"
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
